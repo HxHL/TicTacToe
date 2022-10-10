@@ -1,9 +1,9 @@
 /*
  * Notes For Hudson-
  * 
- * O ai only plays on the 1st turn
- * im pretty sure everything else is working
- * and your welcome if this helped at all :)
+ * WHY IS IT NOT WORKING?!
+ * CRYING
+ * xz,.l/dedsxcvdkzx[nuoASde]P098[q]
  * 
  */
 import java.awt.*;
@@ -14,7 +14,7 @@ import javax.swing.*;
 public class TicTacToe implements ActionListener{
 
 	Random random = new Random();
-	int randomNum = random.nextInt((9 - 1) + 1) + 1;
+	int randomNum = random.nextInt((9 - 1) + 1);
 
 	//v Creating a Frame to hold the field, and the panels to spilt the feilds into sections
 	JFrame frame = new JFrame();
@@ -22,8 +22,10 @@ public class TicTacToe implements ActionListener{
 	JPanel button_panel = new JPanel();
 	JLabel textfield = new JLabel();
 	JButton[] buttons = new JButton[9];
+	
 	int totalplay = 0;
 
+	boolean aiCheck = false;
 	boolean player1_turn; //instead of changing a varible i used a boolean which is true when it is player1's turn and false on player2s
 
 	
@@ -63,7 +65,6 @@ public class TicTacToe implements ActionListener{
 		title_panel.add(textfield);
 		frame.add(title_panel,BorderLayout.NORTH);
 		frame.add(button_panel);
-		
 		firstTurn();
 	}
 
@@ -81,22 +82,35 @@ public class TicTacToe implements ActionListener{
 						textfield.setText("O turn"); //its pretty obvious what this line does. (;
 						check();
 						totalplay++;
+						aiCheck = false;
 					}
 				}
 				else {
+					while (aiCheck == false) {
+						randNum();
+						if (aiCheck == true) {
+							buttons[randomNum].setForeground(new Color(0,0,255));
+							buttons[randomNum].setText("O");
+							player1_turn=true;
+							textfield.setText("X turn");
+							break;
+						}
+					}
+					check();
+					totalplay++;
+					
+					/* 
 					if(buttons[i].getText()=="") { //These Lines below just do the same thing as above but for Os Turn.
-						buttons[i].setForeground(new Color(0,0,255));
-						buttons[i].setText("O");
-						player1_turn = true;
-						textfield.setText("X turn");
 						check();
 						totalplay++;
 					}
+					*/
 				}
 			}			
 		}
 	}
-	
+
+
 	public void firstTurn() { //This runs on game start in order to check whos turn it is and set the starting player
 		
 		try {
@@ -114,16 +128,24 @@ public class TicTacToe implements ActionListener{
 			textfield.setText("O turn");
 
 		}
+	} 
+
+	public int randomNumGen() {
+		Random random2 = new Random();
+		return random2.nextInt((8));
 	}
 
-	public void ai() {
-		buttons[randomNum].setForeground(new Color(0,0,255));
-		buttons[randomNum].setText("O");
-		player1_turn = true;
-		textfield.setText("X turn");
-		check();
-		totalplay++;
-	}
+	public void randNum() {
+		randomNum = randomNumGen();
+		String buttonText1 = buttons[randomNum].getText();
+		System.out.println(buttonText1);
+		if (buttonText1 == "") {
+			aiCheck = true;
+		}
+		else {
+			aiCheck = false;
+		}
+	}	
 	
 	public void check() { //This is Checking All of the ways a line can be formed to see if someone wins
 		//check X win conditions 
